@@ -1,0 +1,16 @@
+{
+  "name": "tg-mcp",
+  "version": "2.1.0",
+  "description": "A personal Telegram account as one local daemon with an MCP server and a CLI, for AI agents",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "check": "node scripts/core-check.mjs && node scripts/owner-check.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "telegram": "^2.26.16",
+    "websocket": "^1.0.35",
+    "zod": "^4.6.7"
+  }
+}

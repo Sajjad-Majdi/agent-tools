@@ -1,0 +1,6 @@
+* text=auto
+*.cmd text eol=crlf
+*.vbs text eol=crlf
+*.sh text eol=lf
+*.mjs text eol=lf
+*.py text eol=lf

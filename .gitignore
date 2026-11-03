@@ -1,0 +1,15 @@
+# Built binaries go to a GitHub Release, not into git
+*.exe
+bin/
+*.apk
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+token.txt
+session.txt
+config.json
+config.js
+daemon.key
+logs/
+.wrangler/

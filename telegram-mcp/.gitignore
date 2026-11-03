@@ -1,0 +1,7 @@
+node_modules/
+config.json
+session.txt
+daemon.key
+downloads/
+logs/
+relay/.wrangler/

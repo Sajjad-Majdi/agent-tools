@@ -1,0 +1,52 @@
+# <Video name>: scene brief for helper agents
+
+A narrated Persian explainer (or promo): <topic>, about <N> minutes. Remotion 4 project, 1920x1080, 30 fps. Narration
+audio and per-sentence timing already exist; you only write the VISUALS of your scenes, synced to the narration beats.
+
+## The viewer
+<Who watches and what they already know. For a zero-to-hero explainer: they know nothing.> Every scene must make the idea
+visibly obvious: concrete numbers, objects that move and transform, one focal point at a time, cause then effect. Show,
+do not list. Avoid text walls; short labels only.
+
+## Hard rules
+1. **Technical terms on screen are English, in Latin script** (`Token`, `Embedding`, `Attention`, `KV Cache` ...). Never
+   transliterate them into Persian letters. Persian UI text is fine for plain words.
+2. Persian labels: short, colloquial, correct. Use `FaText` (RTL, Vazirmatn). Mixed Persian and English inside one `FaText` is
+   fine.
+3. Layout: the title bar occupies y < 190 (drawn by `SceneShell`). Put all your content in x 90..1830, y 200..1000. No
+   captions or subtitles are drawn. Minimum text size about 22 px (at 1920 wide); main labels 28-40 px.
+4. Every visual element appears or transforms in sync with the sentence that talks about it: use
+   `const at = useAt(); at(k, delayFrames?, durFrames?)` for an eased 0..1 progress starting at beat `k` (sentence k starts).
+   `useSince()(k)` gives frames since beat k. Fade old material out when the narration moves on (`1 - at(k)`), do not pile
+   up.
+5. Animation only through `useCurrentFrame`, `interpolate` and the helpers. No CSS transitions or CSS animations. Be
+   deterministic: use `rand(i)` from the kit, never `Math.random`.
+6. Dark theme, palette `C` from the kit. Fonts: `FA` (Persian), `EN` (Inter), `MONO`.
+7. Do NOT edit `kit.tsx`, `rootHelper.tsx`, the root composition file, the narration, timing or glossary files, or any
+   scenes file other than yours. Put any helper components you need inside your own scenes file.
+8. Do not render the full video. Do not start a preview server or open a browser preview.
+
+## Kit (`src/<name>/kit.tsx`): read it first
+`SceneShell` (background, title, progress, audio), `useAt`, `useSince`, `mix`, `rand`, `Reveal`, `Block` (labelled box),
+`Arrow` (animated, optional curve or dashes), `Chip`, `FaText`, `Cross`, `Tokens` (row of word chips), `Formula` (mono
+text), `Matrix` (cell grid with value(r,c) 0..1, or below 0 for hidden). Look at the existing scenes files for style and
+patterns.
+
+Scene component signature: `export const Foo: React.FC<SP> = (p) => (<SceneShell {...p} title="Persian title, English terms
+in Latin" en="ENGLISH SUBTITLE"><FooBody/></SceneShell>)`, where `FooBody` uses the hooks. The `SP` type is exported from
+the first scenes file.
+
+## Tools
+- Sentences and the start frame of each beat: `node scripts/beats.mjs <sceneId>` (full text also in
+  `src/<name>/timing.json`).
+- Render stills of YOUR scenes only, through your own entry file (isolated bundle):
+  `node scripts/stills.mjs <outDir> src/entries/<X>.tsx T-<sceneId>:<frame> ...`. Then LOOK at the PNGs. Check several
+  frames per scene (early, middle, near the end).
+- Type check: `npx tsc --noEmit` (fix only the errors in your own file; others may be mid-edit by other agents).
+
+## Quality bar before you report done
+For each scene: every sentence has a matching visual moment; nothing overlaps or clips off-screen; no leftover elements
+clutter later beats; English terms are in Latin; text is readable; stills are checked with your own eyes. Report: scenes
+done, anything you are unsure about, and one or two still paths per scene.
+
+Subagent budget: at most 3 agents running at the same time in total (including nested ones), effort high or lower.
